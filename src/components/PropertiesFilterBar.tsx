@@ -22,19 +22,19 @@ export default function PropertiesFilterBar() {
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
       <input
         type="text"
         placeholder="Search title..."
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
+        className="rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
       />
 
       <select
         value={type}
         onChange={(e) => setType(e.target.value)}
-        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
+        className="rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
       >
         <option value="">All Types</option>
         <option value="Apartment">Apartment</option>
@@ -48,13 +48,13 @@ export default function PropertiesFilterBar() {
         placeholder="Location (e.g. Gulshan)"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
+        className="rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
       />
 
       <select
         value={sort}
         onChange={(e) => setSort(e.target.value)}
-        className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600"
+        className="rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
       >
         <option value="">Sort by</option>
         <option value="price_asc">Price: Low to High</option>
@@ -64,7 +64,7 @@ export default function PropertiesFilterBar() {
 
       <button
         onClick={applyFilters}
-        className="bg-teal-700 hover:bg-teal-800 text-white rounded-md px-4 py-2 text-sm font-medium transition"
+        className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-md px-4 py-2 text-sm font-medium transition"
       >
         Apply Filters
       </button>

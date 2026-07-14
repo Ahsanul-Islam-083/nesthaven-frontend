@@ -1,3 +1,4 @@
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import Hero from "@/components/home/Hero";
 import {
   FeaturesSection,
@@ -11,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <>
+    <SmoothScrollProvider>
       <Hero />
       <FeaturesSection />
       <CategoriesSection />
@@ -20,6 +21,6 @@ export default function Home() {
       <TestimonialsSection />
       <NewsletterSection />
       <CtaSection />
-    </>
+    </SmoothScrollProvider>
   );
 }

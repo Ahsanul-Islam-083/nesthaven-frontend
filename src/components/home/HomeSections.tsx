@@ -7,11 +7,12 @@ const featureItems = [
   { title: "Flexible Filters", desc: "Search by location, price, bedrooms, and property type.", icon: "⚙" },
 ];
 
+
 const categories = [
-  { name: "Apartments", count: "480 listings" },
-  { name: "Houses", count: "310 listings" },
-  { name: "Studios", count: "190 listings" },
-  { name: "Shared Rooms", count: "220 listings" },
+  { name: "Apartments", type: "Apartment", count: "480 listings" },
+  { name: "Houses", type: "House", count: "310 listings" },
+  { name: "Studios", type: "Studio", count: "190 listings" },
+  { name: "Shared Rooms", type: "Shared Room", count: "220 listings" },
 ];
 
 const steps = [
@@ -59,7 +60,7 @@ export function CategoriesSection() {
           {categories.map((c) => (
             <Link
               key={c.name}
-              href={`/properties?type=${encodeURIComponent(c.name)}`}
+              href={`/properties?type=${encodeURIComponent(c.type)}`}
               className="rounded-xl bg-white border border-slate-200 p-6 hover:border-teal-600 transition text-center"
             >
               <h3 className="font-semibold text-slate-900">{c.name}</h3>

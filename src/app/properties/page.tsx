@@ -24,7 +24,7 @@ async function PropertiesList({ searchParams }: { searchParams: { [key: string]:
 
   if (properties.length === 0) {
     return (
-      <div className="text-center py-20">
+      <div className="text-center py-20 bg-white/40 dark:bg-slate-900/30 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl">
           <p className="text-slate-500 dark:text-slate-400">No properties match your search. Try adjusting your filters.</p>
       </div>
     );
@@ -54,8 +54,8 @@ async function PropertiesList({ searchParams }: { searchParams: { [key: string]:
               href={buildPageLink(p)}
               className={`w-9 h-9 flex items-center justify-center rounded-md text-sm transition ${
                 p === page
-                  ? "bg-emerald-600 text-white"
-                  : "bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                  ? "bg-emerald-600/80 backdrop-blur-sm text-white"
+                  : "bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-white/30 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/80 dark:hover:bg-white/20"
               }`}
             >
               {p}

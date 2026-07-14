@@ -8,12 +8,12 @@ import { Property } from "@/types/property";
 export default function PropertyCard({ property }: { property: Property }) {
   return (
     <motion.div
-      className="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm h-full"
+      className="flex flex-col rounded-2xl border border-white/30 dark:border-white/10 bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl overflow-hidden shadow-lg shadow-black/5 dark:shadow-black/20 h-full"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      whileHover={{ scale: 1.02, boxShadow: "0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1)" }}
+      whileHover={{ scale: 1.02 }}
     >
       <div className="relative w-full h-48 bg-slate-100 dark:bg-slate-800">
         <Image
@@ -22,7 +22,7 @@ export default function PropertyCard({ property }: { property: Property }) {
           fill
           className="object-cover"
         />
-        <span className="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-medium px-2 py-1 rounded-md">
+        <span className="absolute top-3 left-3 bg-emerald-600/80 backdrop-blur-sm text-white text-xs font-medium px-2 py-1 rounded-lg">
           {property.type}
         </span>
       </div>
@@ -39,14 +39,14 @@ export default function PropertyCard({ property }: { property: Property }) {
           <span>★ {property.rating}</span>
         </div>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/20 dark:border-white/5">
           <div>
             <span className="text-lg font-semibold text-slate-900 dark:text-slate-100">৳{property.price.toLocaleString()}</span>
             <span className="text-xs text-slate-500 dark:text-slate-400">/mo</span>
           </div>
           <Link
             href={`/properties/${property._id}`}
-            className="text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-md px-3 py-2 transition"
+            className="text-sm bg-emerald-600/80 hover:bg-emerald-700 backdrop-blur-sm text-white rounded-xl px-3 py-2 transition"
           >
             View Details
           </Link>

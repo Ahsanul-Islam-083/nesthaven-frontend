@@ -5,12 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { authFetch } from "@/lib/authFetch";
 import { Property } from "@/types/property";
+import toast from "react-hot-toast";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function ManageItemsPage() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [error, setError] = useState("");
+  const [confirmId, setConfirmId] = useState<string | null>(null);
 
   const fetchMyProperties = async () => {
     setLoading(true);
@@ -20,7 +22,7 @@ export default function ManageItemsPage() {
       const data = await res.json();
       setProperties(data);
     } catch {
-      setError("Could not load your listings.");
+      toast.error("Could not load your listings.");
     } finally {
       setLoading(false);
     }
@@ -31,15 +33,15 @@ export default function ManageItemsPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this listing?")) return;
-
+    setConfirmId(null);
     setDeletingId(id);
     try {
       const res = await authFetch(`/properties/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Delete failed");
       setProperties((prev) => prev.filter((p) => p._id !== id));
+      toast.success("Listing deleted");
     } catch {
-      setError("Could not delete this listing. Try again.");
+      toast.error("Could not delete this listing. Try again.");
     } finally {
       setDeletingId(null);
     }
@@ -54,17 +56,11 @@ export default function ManageItemsPage() {
         </div>
         <Link
           href="/items/add"
-          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-md px-4 py-2 text-sm font-medium transition whitespace-nowrap"
+          className="bg-emerald-600/80 hover:bg-emerald-700 backdrop-blur-sm text-white rounded-xl px-4 py-2 text-sm font-medium transition whitespace-nowrap"
         >
           + Add New
         </Link>
       </div>
-
-      {error && (
-        <div className="mb-4 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md px-3 py-2">
-          {error}
-        </div>
-      )}
 
       {loading ? (
         <div className="space-y-3">
@@ -73,15 +69,15 @@ export default function ManageItemsPage() {
           ))}
         </div>
       ) : properties.length === 0 ? (
-        <div className="text-center py-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+        <div className="text-center py-20 bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/20 rounded-2xl">
           <p className="text-slate-500 dark:text-slate-400 mb-4">You haven&apos;t listed any properties yet.</p>
           <Link href="/items/add" className="text-emerald-600 font-medium hover:underline">
             List your first property
           </Link>
         </div>
       ) : (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
-          <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-800 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
+        <div className="bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/20 rounded-2xl overflow-hidden">
+          <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-3 bg-white/40 dark:bg-white/5 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">
             <div className="col-span-5">Property</div>
             <div className="col-span-2">Type</div>
             <div className="col-span-2">Price</div>
@@ -91,7 +87,7 @@ export default function ManageItemsPage() {
           {properties.map((property) => (
             <div
               key={property._id}
-              className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center px-6 py-4 border-t border-slate-100 dark:border-slate-800"
+              className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center px-6 py-4 border-t border-white/20 dark:border-white/5"
             >
               <div className="sm:col-span-5 flex items-center gap-3">
                 <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0">
@@ -112,14 +108,14 @@ export default function ManageItemsPage() {
               <div className="sm:col-span-3 flex justify-start sm:justify-end gap-2">
                 <Link
                   href={`/properties/${property._id}`}
-                  className="text-sm bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-md px-3 py-1.5 transition"
+                  className="text-sm bg-white/50 dark:bg-white/10 hover:bg-white/80 dark:hover:bg-white/20 backdrop-blur-sm text-slate-700 dark:text-slate-200 rounded-xl px-3 py-1.5 transition"
                 >
                   View
                 </Link>
                 <button
-                  onClick={() => handleDelete(property._id)}
+                  onClick={() => setConfirmId(property._id)}
                   disabled={deletingId === property._id}
-                  className="text-sm bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-md px-3 py-1.5 transition disabled:opacity-50"
+                  className="text-sm bg-red-50/50 dark:bg-red-900/20 hover:bg-red-100/80 dark:hover:bg-red-900/30 backdrop-blur-sm text-red-600 dark:text-red-400 rounded-xl px-3 py-1.5 transition disabled:opacity-50"
                 >
                   {deletingId === property._id ? "Deleting..." : "Delete"}
                 </button>
@@ -128,6 +124,15 @@ export default function ManageItemsPage() {
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={confirmId !== null}
+        title="Delete listing"
+        description="Are you sure you want to delete this listing? This action cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={() => confirmId && handleDelete(confirmId)}
+        onCancel={() => setConfirmId(null)}
+      />
     </div>
   );
 }

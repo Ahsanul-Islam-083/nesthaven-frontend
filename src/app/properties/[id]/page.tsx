@@ -60,7 +60,7 @@ export default async function PropertyDetailsPage({ params }: PageProps) {
         <div className="lg:col-span-2 space-y-8">
           <FadeIn>
             <div>
-              <span className="inline-block bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-300 text-xs font-medium px-2 py-1 rounded-md mb-3">
+              <span className="inline-block bg-emerald-100/50 dark:bg-emerald-900/30 backdrop-blur-sm text-emerald-600 dark:text-emerald-300 text-xs font-medium px-2 py-1 rounded-lg mb-3">
                 {property.type}
               </span>
               <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">{property.title}</h1>
@@ -81,19 +81,19 @@ export default async function PropertyDetailsPage({ params }: PageProps) {
             <section>
               <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">Key Information</h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 text-center">
+                <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20 dark:border-white/5">
                   <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{property.bedrooms}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Bedrooms</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 text-center">
+                <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20 dark:border-white/5">
                   <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{property.bathrooms}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Bathrooms</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 text-center">
+                <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20 dark:border-white/5">
                   <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">{property.area}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Sq ft</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 text-center">
+                <div className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20 dark:border-white/5">
                   <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">★ {property.rating}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Rating</p>
                 </div>
@@ -115,17 +115,17 @@ export default async function PropertyDetailsPage({ params }: PageProps) {
         {/* Sidebar */}
         <FadeIn>
           <div>
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 sticky top-24">
+            <div className="bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/20 rounded-2xl p-6 sticky top-24">
               <p className="text-3xl font-semibold text-slate-900 dark:text-slate-100">
                 ৳{property.price.toLocaleString()}
                 <span className="text-sm font-normal text-slate-500 dark:text-slate-400">/mo</span>
               </p>
-              <div className="border-t border-slate-100 dark:border-slate-800 my-4" />
+              <div className="border-t border-white/20 dark:border-white/10 my-4" />
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Listed by</p>
               <p className="font-medium text-slate-900 dark:text-slate-100 mb-4">{property.ownerName}</p>
               <Link
                 href="/contact"
-                className="block text-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-md py-3 text-sm font-medium transition"
+                className="block text-center bg-emerald-600/80 hover:bg-emerald-700 backdrop-blur-sm text-white rounded-xl py-3 text-sm font-medium transition"
               >
                 Contact Owner
               </Link>

@@ -39,3 +39,12 @@
     --text-muted: var(--color-slate-500);
   }
 }
+
+/* soft radial gradient page backgrounds to enhance glass surfaces */
+body {
+  background: radial-gradient(ellipse at 50% 0%, #f1f5f9 0%, #f8fafc 60%, #f1f5f9 100%);
+}
+
+.dark body {
+  background: radial-gradient(ellipse at 50% 0%, #0f172a 0%, #020617 60%, #0f172a 100%);
+}

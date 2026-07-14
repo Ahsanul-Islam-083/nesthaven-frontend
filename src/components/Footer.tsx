@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-300">
+    <footer className="bg-slate-900/80 backdrop-blur-xl text-slate-300 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <h3 className="text-white text-lg font-semibold mb-3">NestHaven</h3>
@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+      <div className="border-t border-white/10 py-4 text-center text-xs text-slate-500">
         © {new Date().getFullYear()} NestHaven. All rights reserved.
       </div>
     </footer>

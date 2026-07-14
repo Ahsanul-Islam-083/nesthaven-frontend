@@ -4,19 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient, signUp } from "@/lib/auth-client";
 import PasswordInput from "@/components/PasswordInput";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     if (form.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      toast.error("Password must be at least 6 characters.");
       return;
     }
 
@@ -29,28 +28,23 @@ export default function RegisterPage() {
     setLoading(false);
 
     if (signUpError) {
-      setError(signUpError.message || "Registration failed.");
+      toast.error(signUpError.message || "Registration failed.");
       return;
     }
 
+    toast.success("Account created!");
     router.push("/properties");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 dark:shadow-black/20 border border-white/30 dark:border-white/10 p-8">
         <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-1">
           Create an account
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
           Start listing or browsing properties on NestHaven.
         </p>
-
-        {error && (
-          <div className="mb-4 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md px-3 py-2">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -62,7 +56,7 @@ export default function RegisterPage() {
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="Md. Ahsanul Islam"
             />
           </div>
@@ -75,7 +69,7 @@ export default function RegisterPage() {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="you@example.com"
             />
           </div>
@@ -92,7 +86,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-md py-2 text-sm font-medium transition"
+            className="w-full bg-emerald-600/80 hover:bg-emerald-700 disabled:opacity-60 backdrop-blur-sm text-white rounded-xl py-2 text-sm font-medium transition"
           >
             {loading ? "Creating account..." : "Create account"}
           </button>
@@ -103,7 +97,7 @@ export default function RegisterPage() {
                 callbackURL: "/properties",
               })
             }
-            className="w-full flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-md py-2 text-sm font-medium transition mt-3"
+            className="w-full flex items-center justify-center gap-2 border border-white/30 dark:border-white/10 hover:bg-white/50 dark:hover:bg-white/10 backdrop-blur-sm text-slate-700 dark:text-slate-200 rounded-xl py-2 text-sm font-medium transition mt-3"
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
               <path

@@ -4,25 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient, signIn } from "@/lib/auth-client";
 import PasswordInput from "@/components/PasswordInput";
+import toast from "react-hot-toast";
 
 const DEMO_USER = { email: "demo@nesthaven.com", password: "demo123456" };
 
 export default function LoginPage() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const doLogin = async (email: string, password: string) => {
-    setError("");
     setLoading(true);
     const { error: signInError } = await signIn.email({ email, password });
     setLoading(false);
 
     if (signInError) {
-      setError(signInError.message || "Login failed.");
+      toast.error(signInError.message || "Login failed.");
       return;
     }
+    toast.success("Logged in successfully");
     router.push("/properties");
   };
 
@@ -33,24 +33,19 @@ export default function LoginPage() {
 
   const handleDemoLogin = () => {
     setForm(DEMO_USER);
+    toast.success("Logged in with demo account");
     doLogin(DEMO_USER.email, DEMO_USER.password);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
-      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl shadow-lg shadow-black/5 dark:shadow-black/20 border border-white/30 dark:border-white/10 p-8">
         <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-1">
           Welcome back
         </h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
           Log in to manage or browse listings.
         </p>
-
-        {error && (
-          <div className="mb-4 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md px-3 py-2">
-            {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -62,7 +57,7 @@ export default function LoginPage() {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="you@example.com"
             />
           </div>
@@ -79,21 +74,21 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60 text-white rounded-md py-2 text-sm font-medium transition"
+            className="w-full bg-emerald-600/80 hover:bg-emerald-700 disabled:opacity-60 backdrop-blur-sm text-white rounded-xl py-2 text-sm font-medium transition"
           >
             {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
 
         <div className="relative my-5 text-center text-xs text-slate-400 dark:text-slate-500">
-          <span className="bg-white dark:bg-slate-900 px-2 relative z-10">or</span>
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-slate-200 dark:bg-slate-700 -z-0" />
+          <span className="bg-white/70 dark:bg-slate-900/50 px-2 relative z-10 backdrop-blur-sm">or</span>
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-white/20 dark:bg-white/10 -z-0" />
         </div>
 
         <button
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full border border-amber-500 text-amber-700 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30 rounded-md py-2 text-sm font-medium transition"
+          className="w-full border border-amber-500/50 text-amber-700 dark:text-amber-400 hover:bg-amber-50/50 dark:hover:bg-amber-950/20 backdrop-blur-sm rounded-xl py-2 text-sm font-medium transition"
         >
           Use demo account
         </button>
@@ -105,7 +100,7 @@ export default function LoginPage() {
               callbackURL: "/properties",
             })
           }
-          className="w-full flex items-center justify-center gap-2 border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-md py-2 text-sm font-medium transition mt-3"
+          className="w-full flex items-center justify-center gap-2 border border-white/30 dark:border-white/10 hover:bg-white/50 dark:hover:bg-white/10 backdrop-blur-sm text-slate-700 dark:text-slate-200 rounded-xl py-2 text-sm font-medium transition mt-3"
         >
           <svg width="18" height="18" viewBox="0 0 24 24">
             <path

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authFetch } from "@/lib/authFetch";
+import toast from "react-hot-toast";
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -17,10 +18,8 @@ export default function AddItemPage() {
     bathrooms: "",
     area: "",
   });
-//   const [imageUrl, setImageUrl] = useState("");
 const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -36,12 +35,12 @@ const handleImageUpload = async (
   if (!files || files.length === 0) return;
 
   if (imageUrls.length + files.length > 6) {
-    setError("You can upload a maximum of 6 images.");
+    toast.error("You can upload a maximum of 6 images.");
     return;
   }
 
   setIsUploading(true);
-  setError("");
+  const uploadToast = toast.loading("Uploading images...");
 
   try {
     const API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
@@ -75,12 +74,14 @@ const handleImageUpload = async (
 
     setImageUrls((prev) => [...prev, ...uploadedImages]);
   } catch (err) {
+    toast.dismiss(uploadToast);
     if (err instanceof Error) {
-      setError(err.message);
+      toast.error(err.message);
     } else {
-      setError("Image upload failed.");
+      toast.error("Image upload failed.");
     }
   } finally {
+    toast.dismiss(uploadToast);
     setIsUploading(false);
 
     // Allow selecting the same file again later
@@ -90,10 +91,9 @@ const handleImageUpload = async (
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     if (!form.title || !form.shortDescription || !form.fullDescription || !form.price || !form.location) {
-      setError("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
 
@@ -124,9 +124,10 @@ const handleImageUpload = async (
 
       if (!res.ok) throw new Error("Failed to add property");
 
+      toast.success("Listing added successfully");
       router.push("/items/manage");
     } catch {
-      setError("Something went wrong while submitting your listing.");
+      toast.error("Something went wrong while submitting your listing.");
     } finally {
       setLoading(false);
     }
@@ -137,20 +138,14 @@ const handleImageUpload = async (
       <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100 mb-1">List a Property</h1>
       <p className="text-slate-500 dark:text-slate-400 mb-8">Fill in the details below to add your property to NestHaven.</p>
 
-      {error && (
-        <div className="mb-4 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md px-3 py-2">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="bg-white/60 dark:bg-slate-900/50 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-lg shadow-black/5 dark:shadow-black/20 rounded-2xl p-6 space-y-5">
         <div>
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title *</label>
           <input
             name="title"
             value={form.title}
             onChange={handleChange}
-            className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+            className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             placeholder="e.g. Sunny 2-Bed Apartment in Gulshan"
           />
         </div>
@@ -161,7 +156,7 @@ const handleImageUpload = async (
             name="shortDescription"
             value={form.shortDescription}
             onChange={handleChange}
-            className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+            className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             placeholder="One-line summary shown on the listing card"
           />
         </div>
@@ -173,7 +168,7 @@ const handleImageUpload = async (
             value={form.fullDescription}
             onChange={handleChange}
             rows={5}
-            className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+            className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             placeholder="Detailed description shown on the property's details page"
           />
         </div>
@@ -186,7 +181,7 @@ const handleImageUpload = async (
               type="number"
               value={form.price}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="45000"
             />
           </div>
@@ -196,7 +191,7 @@ const handleImageUpload = async (
               name="location"
               value={form.location}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="e.g. Gulshan, Dhaka"
             />
           </div>
@@ -209,7 +204,7 @@ const handleImageUpload = async (
               name="type"
               value={form.type}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             >
               <option value="Apartment">Apartment</option>
               <option value="House">House</option>
@@ -224,7 +219,7 @@ const handleImageUpload = async (
               type="number"
               value={form.bedrooms}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
           <div>
@@ -234,7 +229,7 @@ const handleImageUpload = async (
               type="number"
               value={form.bathrooms}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -247,7 +242,7 @@ const handleImageUpload = async (
               type="number"
               value={form.area}
               onChange={handleChange}
-              className="w-full rounded-md border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600"
+              className="w-full rounded-xl border border-white/30 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-sm dark:text-slate-100 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
 
@@ -257,7 +252,7 @@ const handleImageUpload = async (
     Property Images
   </label>
 
-  <label className="cursor-pointer inline-flex items-center justify-center px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition">
+  <label className="cursor-pointer inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600/80 hover:bg-emerald-700 backdrop-blur-sm text-white transition">
     Select Images
 
     <input

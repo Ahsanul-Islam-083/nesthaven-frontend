@@ -48,7 +48,7 @@ export default function PropertyCard({ property }: { property: Property }) {
             href={`/properties/${property._id}`}
             className="text-sm bg-emerald-600/80 hover:bg-emerald-700 backdrop-blur-sm text-white rounded-xl px-3 py-2 transition"
           >
-            View Details
+            View asdf
           </Link>
         </div>
       </div>
